@@ -9,68 +9,79 @@ create table Utente(
     email varchar(50),
     user_type smallint,
     foto_profilo varchar(200),
-    constraint CF_PK primary key(CF)
+    constraint Utente_PK primary key(CF)
 );
 
-create table Struttura(
-    ID_struttura serial not null,
-    capS integer,
-    --proprietario integer, 
-    data_fine date, 
-    indirizzoS varchar(20), 
-    numero_civicoS smallint,
-    constraint ID_struttura_PK primary key(ID_struttura),
-    --constraint proprietario_FK foreign key(Proprietario) references Utente(CF)
+create table Lingua(
+    ID_lingua serial integer not null,
+    nome varchar(20),
+    constraint Lingua_PK primary key(ID_lingua)
 );
 
-create table Fornisce(
-    ID_struttura integer not null,
-    titolo varchar(50),
-    constraint ID_struttura_FK_Struttura foreign key(ID_struttura) references Struttura(ID_struttura)
+create table Pagamento(
+    Prenotazione integer,
+    Utente varchar(16),
+    card_type varchar(20),
+    data_pagamento timestamp not null,
+    ammontare numeric not null,
+    valuta varchar(5),
+    constraint Pagamento_PK primary key(Prenotazione),
+    constraint Prenotazione_FK_Prenotazione foreign key(Prenotazione) references Prenotazione(n_pren),
+    constraint Utente_FK_Utente foreign key(Utente) references Utente(CF)
 );
 
-create table Servizio(
-    titolo varchar(50) not null,
-    descrizione varchar(500), 
-    icona varchar(200),
-    constraint titolo_PK primary key(titolo) 
-);
-
-create table FotoS(
+create table Foto(
     ID_foto serial not null, 
-    immagine varchar(200), 
-    ID_struttura integer not null,
-    constraint ID_struttura_FK_Struttura foreign key(ID_struttura) references Struttura(ID_struttura),
-    constraint ID_foto_PK primary key(ID_foto)
+    url_pic varchar(200),
+    struttura integer not null,
+    constraint struttura_FK_Struttura foreign key(struttura) references Struttura_corrente(ID_struttura),
+    constraint Foto_PK primary key(ID_foto)
 );
 
-create table Possessi(
-    ID_struttura integer not null, 
-    CF varchar(16) not null,
-    constraint ID_struttura_FK_Struttura foreign key(ID_struttura) references Struttura(ID_struttura),
-    constraint CF_FK_Utente foreign key(CF) references Utente(CF) on delete cascade,
-    constraint possessi_PK primary key(ID_struttura, CF)
+create table CasaC(
+    struttura integer not null,
+    prezzo numeric not null,
+    disponibilita boolean not null,
+    descrizione varchar(500),
+    numero_posti_letto smallint not null,
+    numero_letti smallint not null,
+    numero_bagni smallint not null,
+    tipo_letto varchar(20),
+    constraint CasaC_PK primary key(struttura),
+    constraint struttura_FK_Struttura foreign key(struttura) references Struttura_corrente(ID_struttura)
 );
 
-create table Prenotazione(
-    n_pren serial not null, 
-    ID_struttura integer, 
-    utente integer, 
-    data_inizio date,
-    data_fin date,
-    check_in date,
-    check_out date,
-    constraint  n_pren_PK primary key(n_pren)
+create table StanzaS(
+    struttura integer not null,
+    InternoS smallint not null,
+    n_stanza smallint not null,
+    internoA smallint not null,
+    piano smallint not null,
+    prezzo numeric not null,
+    disponibilitaSt boolean not null,
+    descrizioneSt varchar(500),
+    numero_posti_ letto smallint not null,
+    numero_letti smallint not null, 
+    numero_bagni smallint not null, 
+    tipo_letto varchar(20),
+    constraint StanzaSt_PK primary key(InternoS, n_stanza, internoA, struttura, piano),
+    constraint struttura_FK_AppartamS foreign key(struttura) references AppartamS(struttura),
+    constraint InternoS_FK_AppartamS foreign key(InternoS) references AppartamS(internoA),
+    constraint piano foreign key(piano) references AppartamS(piano)
 );
 
-create table Recensione(
-    ID_recensione serial not null, 
-    editore integer, 
-    data_pubblicazione timestamp,  
-    testo varchar(500), 
-    tipo_recensione boolean not null, 
-    ID_struttura integer,
-    constraint ID_struttura_FK_Struttura foreign key(ID_struttura) references Struttura(ID_struttura),
-    --constraint editore_FK_Utente foreign key(editore) references Utente(CF),
-    constraint ID_recensione_PK primary key(ID_recensione)
+create table Modifica_struttura(
+    struttura integer not null,
+    proprietario varchar(16),
+    constraint Modifica_struttura_PK primary key(struttura, proprietario),
+    constraint struttura _FK_Struttura_corrente foreign key(struttura) references Struttura_corrente(ID_struttura),
+    constraint proprietario_FK_Utente foreign key(proprietario) references Utente(CF)
+);
+
+create table Parla(
+    Utente varchar(20),
+    lingua integer,
+    constraint Parla_PK primary key(Utente, lingua),
+    constraint Utente_FK_Utente foreign key(Utente) references Utente(CF),
+    constraint lingua_FK_Lingua foreign key(lingua) references Lingua(ID_lingua)
 );
