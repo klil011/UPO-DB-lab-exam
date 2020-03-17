@@ -1,6 +1,6 @@
 SQL - KHALIL MOUNIR
 	
-create Struttura_corrente (
+create table Struttura_corrente (
 	ID_struttura serial not null,
 	stato varchar(20), 
 	regione varchar(20), 
@@ -84,7 +84,7 @@ create Ha_posseduto(
 
 
 create Review_user(
-	ID_risposta serial not null, 
+	ID_rec_user serial not null, 
 	scrittore varchar(16), 
 	recensito varchar(16), 
 	data_recensione timestamp, 
