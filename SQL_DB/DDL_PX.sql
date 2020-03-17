@@ -1,4 +1,4 @@
-Struttura_storica (
+create table Struttura_storica (
 	ID_struttura serial,
 	stato varchar(20),
 	regione varchar(20),
@@ -13,7 +13,7 @@ Struttura_storica (
 	constraint Struttura_storica_PK primary key(ID_struttura)
 );
 
-Recensione (
+create table Recensione (
 	ID_recensione serial,
 	editore varchar(16),
 	data_pubblicazione timestamp,
@@ -25,7 +25,7 @@ Recensione (
 	constraint struttura_FK_Struttura foreign key (struttura) references Struttura(ID_struttura)
 );
 
-FotoS(
+create table FotoS(
 	ID_foto serial,
 	url_pic varchar(200),
 	struttura integer
@@ -33,7 +33,7 @@ FotoS(
 	constraint struttura_FK_Struttura foreign key (struttura) references Struttura(ID_struttura)
 );
 
-CasaS (
+create table CasaS (
 	struttura integer,
 	data_fine timestamp,
 	prezzo numeric,
@@ -47,7 +47,7 @@ CasaS (
 	constraint struttura_FK_Struttura foreign key (struttura) references Struttura_storica(ID_struttura)
 );
 
-AppartamC(
+create table AppartamC(
 	struttura integer,
 	internoA smallint,
 	piano smallint,
@@ -55,7 +55,7 @@ AppartamC(
 	constraint struttura_FK_Struttura foreign key (struttura) references Struttura_corrente(ID_struttura)
 );
 
-Fornisce(
+create table (
 	struttura integer, 
 	servizio smallint,
 	constraint Fornisce_PK primary key(struttura, servizio),
@@ -63,7 +63,7 @@ Fornisce(
 	constraint servizio_FK_Servizio foreign key (servizio) references Servizio(ID_servizio)
 );
 
-Possiede(
+create table Possiede(
 	proprietario varchar(16),
 	struttura integer,
 	constraint Possiede_PK primary key(proprietario, struttura),
@@ -77,7 +77,7 @@ Possiede(
 
 
 /*VECCHIO SCHEMA
-Modifica_struttura(
+create table Modifica_struttura(
 	ID_struttura serial, 
 	CF varchar(16),
 	constraint ID_struttura_PK primary key (ID_struttura),
@@ -86,7 +86,7 @@ Modifica_struttura(
 	constraint ID_struttura_FK_Struttura foreign key (ID_struttura) references Struttura(ID_struttura)
 );
 
-Struttura_storica(
+create table Struttura_storica(
 	ID_struttura integer, 
 	capS small integer, 
 	proprietario varchar(16), 
@@ -98,7 +98,7 @@ Struttura_storica(
 	constraint proprietario_PK foreign key (proprietario) references Utente(CF)
 );
 
-CasaS (
+create table CasaS (
 	ID_struttura integer, 
 	data_fine timestamp,
 	constraint ID_struttura_PK primary key (ID_struttura),
@@ -106,7 +106,7 @@ CasaS (
 	constraint ID_struttura_FK_Struttura_storica foreign key (ID_struttura) references Struttura_storica(ID_struttura)
 );
 
-AppartamS(
+create table AppartamS(
 	ID_struttura integer, 
 	internoA smallint, 
 	piano smallint,

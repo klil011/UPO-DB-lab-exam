@@ -1,6 +1,6 @@
 SQL - KHALIL MOUNIR
 	
-create Struttura_corrente (
+create table Struttura_corrente (
 	ID_struttura serial not null,
 	stato varchar(20), 
 	regione varchar(20), 
