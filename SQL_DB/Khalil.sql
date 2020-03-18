@@ -8,7 +8,7 @@ create table Struttura_corrente (
 	CapS integer, 
 	indirizzoS varchar(20), 
 	numero_civicoS smallint, 
-	numero_camere_da_letto integer, 
+	numero_camere_da_letto integer check(numero_camere_da_letto > 0), 
 	limite_ingresso timestamp, 
 	limite_uscita timestamp
 );
@@ -35,7 +35,7 @@ create Prenotazione(
 	check_in timestamp, 
 	check_out timestamp
 	constraint Prenotazione_PK primary key(n_pren),
-	constraint Struttura_FK_Prenotazione foreign key(struttura) references Struttura_corrente(ID_struttura),
+	constraint Struttura_FK_Prenotazione foreign key(struttura) references Struttura_corrente(ID_struttura) on delete set null,
 	constraint Cliente_FK_Prenotazione foreign key(cliente) references Utente(CF)
 );
 
@@ -55,23 +55,22 @@ create AppartamS(
 );
 
 
-create StanzaC(
-	InternoS smallint not null, 
+create StanzaC( 
 	n_stanza smallint not null, 
 	struttura integer not null, 
 	internoA smallint not null, 
 	piano smallint not null, 
-	prezzo numeric, 
+	prezzo numeric check(prezzo > 0), 
 	disponibilitàSt boolean, 
 	descrizioneSt varchar(500), 
-	numero_posti_ letto smallint, 
-	numero_letti smallint, 
-	numero_bagni smallint, 
+	numero_posti_ letto smallint check(numero_posti_ letto > 0), 
+	numero_letti smallint check(numero_letti > 0), 
+	numero_bagni smallint check(bagni >= 0), 
 	tipo_letto varchar(20),
 	constraint StanzaC_PK primary key(InternoS, n_stanza, struttura, internoA, piano),
-	constraint Struttura_FK_StanzaC foreign key(struttura) references AppartamC(struttura),
-	constraint Struttura_FK_StanzaC foreign key(internoA) references AppartamC(internoA),
-	constraint Struttura_FK_StanzaC foreign key(piano) references AppartamC(piano)
+	constraint Struttura_FK_StanzaC foreign key(struttura) references AppartamC(struttura) on delete cascade,
+	constraint Struttura_FK_StanzaC foreign key(internoA) references AppartamC(internoA) on delete cascade,
+	constraint Struttura_FK_StanzaC foreign key(piano) references AppartamC(piano) on delete cascade
 );
 
 create Ha_posseduto(
@@ -90,8 +89,8 @@ create Review_user(
 	data_recensione timestamp, 
 	testo varchar(500),
 	constraint Review_user_PK primary key(proprietario, struttura),
-	constraint Scrittore_FK_Review_user foreign key(scrittore) references Utente(CF),
-	constraint Recensito_FK_Review_user foreign key(recensito) references Utente(CF)
+	constraint Scrittore_FK_Review_user foreign key(scrittore) references Utente(CF) on delete set null,
+	constraint Recensito_FK_Review_user foreign key(recensito) references Utente(CF) on delete set null
 );
 
 
