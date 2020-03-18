@@ -1,74 +1,74 @@
 create table Struttura_storica (
-	ID_struttura serial,
-	stato varchar(20),
-	regione varchar(20),
-	città varchar(20),
-	CapS integer,
-	indirizzoS varchar(20),
-	numero_civicoS smallint,
-	data_vendita timestamp,
-	numero camere_da_letto smallint,
-	limite_ingresso timestamp,
-	limite_uscita timestamp
+	ID_struttura serial not null,
+	stato varchar(20) not null,
+	regione varchar(20) not null,
+	città varchar(20) not null,
+	CapS integer not null,
+	indirizzoS varchar(20) not null,
+	numero_civicoS smallint not null,
+	data_vendita timestamp not null,
+	numero camere_da_letto smallint not null check (numero_posti_letto > 0),
+	limite_ingresso timestamp not null check (limite_ingresso < limite_uscita),
+	limite_uscita timestamp not null,
 	constraint Struttura_storica_PK primary key(ID_struttura)
 );
 
 create table Recensione (
-	ID_recensione serial,
+	ID_recensione serial not null,
 	editore varchar(16),
-	data_pubblicazione timestamp,
-	testo varchar(500),
-	tipo boolean,
-	struttura integer,
+	data_pubblicazione timestamp not null,
+	testo varchar(500) not null,
+	tipo boolean not null,
+	struttura integer not null,
 	constraint ID_recensione_PK primary key(ID_recensione),
-	constraint editore_FK_Utente foreign key (editore) references Utente(CF),
-	constraint struttura_FK_Struttura foreign key (struttura) references Struttura(ID_struttura)
+	constraint editore_FK_Utente foreign key (editore) references Utente(CF) on delete set null,
+	constraint struttura_FK_Struttura foreign key (struttura) references Struttura(ID_struttura) on delete set null
 );
 
 create table FotoS(
-	ID_foto serial,
+	ID_foto serial not null,
 	url_pic varchar(200),
-	struttura integer
+	struttura integer not null,
 	constraint FotoS_PK primary key(ID_foto),
 	constraint struttura_FK_Struttura foreign key (struttura) references Struttura(ID_struttura)
 );
 
 create table CasaS (
-	struttura integer,
-	data_fine timestamp,
-	prezzo numeric,
-	disponibilità boolean,
-	descrizione varchar(500),
-	numero_posti_letto smallint,
-	numero_letti smallint,
-	numero_bagni smallint,
-	tipo_letto varchar(20)
+	struttura integer not null,
+	data_fine timestamp not null,
+	prezzo numeric check (prezzo > 0),
+	disponibilità boolean not null,
+	descrizione varchar(500) not null,
+	numero_posti_letto smallint not null check (numero_posti_letto > 0),
+	numero_letti smallint check not null (numero_letti > 0),
+	numero_bagni smallint check not null (numero_bagni >= 0),,
+	tipo_letto varchar(20),
 	constraint CasaS_PK primary key(struttura, data_fine),
 	constraint struttura_FK_Struttura foreign key (struttura) references Struttura_storica(ID_struttura)
 );
 
 create table AppartamC(
-	struttura integer,
-	internoA smallint,
-	piano smallint,
+	struttura integer not null,
+	internoA smallint not null,
+	piano smallint not null,
 	constraint AppartamC_PK primary key(struttura, internoA),
-	constraint struttura_FK_Struttura foreign key (struttura) references Struttura_corrente(ID_struttura)
+	constraint struttura_FK_Struttura foreign key (struttura) references Struttura_corrente(ID_struttura) on delete cascade
 );
 
-create table (
-	struttura integer, 
+create table fornisce(
+	struttura integer not null, 
 	servizio smallint,
 	constraint Fornisce_PK primary key(struttura, servizio),
-	constraint struttura_FK_Struttura foreign key (struttura) references Struttura(ID_struttura),
+	constraint struttura_FK_Struttura foreign key (struttura) references Struttura(ID_struttura) on delete cascade,
 	constraint servizio_FK_Servizio foreign key (servizio) references Servizio(ID_servizio)
 );
 
 create table Possiede(
 	proprietario varchar(16),
-	struttura integer,
+	struttura integer not null,
 	constraint Possiede_PK primary key(proprietario, struttura),
-	constraint proprietario_FK_Utente foreign key (proprietario) references Utente(CF),
-	constraint struttura_FK_Struttura foreign key (struttura) references Struttura_corrente(ID_struttura)
+	constraint proprietario_FK_Utente foreign key (proprietario) references Utente(CF) on delete cascade,
+	constraint struttura_FK_Struttura foreign key (struttura) references Struttura_corrente(ID_struttura) on delete cascade
 );
 
 
