@@ -2,12 +2,12 @@ SQL - KHALIL MOUNIR
 	
 create table Struttura_corrente (
 	ID_struttura serial not null,
-	stato varchar(20), 
-	regione varchar(20), 
-	città varchar(20), 
-	CapS integer, 
-	indirizzoS varchar(20), 
-	numero_civicoS smallint, 
+	stato varchar(20) not null, 
+	regione varchar(20) not null, 
+	città varchar(20) not null, 
+	CapS integer not null, 
+	indirizzoS varchar(20) not null, 
+	numero_civicoS smallint not null, 
 	numero_camere_da_letto integer check(numero_camere_da_letto > 0), 
 	limite_ingresso timestamp, 
 	limite_uscita timestamp
