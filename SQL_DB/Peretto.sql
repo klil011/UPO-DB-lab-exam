@@ -6,7 +6,7 @@ create table Utente(
     indirizzoU varchar(50) not null,
     numero_civicoU integer not null,
     data_nascita date,
-    email varchar(50),
+    email varchar(50) not null,
     user_type smallint not null,
     foto_profilo varchar(200),
     constraint Utente_PK primary key(CF)
@@ -27,6 +27,7 @@ create table Pagamento(
     valuta varchar(5) not null,
     constraint Pagamento_PK primary key(Prenotazione),
     constraint Prenotazione_FK_Prenotazione foreign key(Prenotazione) references Prenotazione(n_pren),
+        on delete cascade
     constraint Utente_FK_Utente foreign key(Utente) references Utente(CF)
         on delete set null
 );
@@ -84,8 +85,8 @@ create table Modifica_struttura(
 );
 
 create table Parla(
-    Utente varchar(20),
-    lingua integer,
+    Utente varchar(20) not null,
+    lingua integer not null,
     constraint Parla_PK primary key(Utente, lingua),
     constraint Utente_FK_Utente foreign key(Utente) references Utente(CF)
         on delete cascade,
