@@ -22,7 +22,7 @@ create Risposte (
 	recensione integer not null,
 	constraint Risposte_PK primary key(ID_risposta),
 	constraint Recensione_FK_Risposte foreign key(recensione) references Recensione(ID_recensione),
-	constraint Utente_FK_Risposte foreign key(editore) references Utente(CF)
+	constraint Utente_FK_Risposte foreign key(editore) references Utente(CF) on delete set null
 	);
 
 
