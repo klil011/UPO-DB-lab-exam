@@ -9,6 +9,7 @@ create table Utente(
     email varchar(50) not null,
     user_type smallint not null,
     foto_profilo varchar(200),
+	super_host boolean,
     constraint Utente_PK primary key(CF)
 );
 
@@ -29,8 +30,8 @@ create table Struttura_corrente (
 	indirizzoS varchar(20) not null, 
 	numero_civicoS smallint not null, 
 	numero_camere_da_letto integer check(numero_camere_da_letto > 0), 
-	limite_ingresso timestamp, 
-	limite_uscita timestamp,
+	limite_ingresso time, 
+	limite_uscita time,
 	constraint Struttura_corrente_PK primary key(ID_struttura)
 );
 
@@ -81,8 +82,8 @@ create table Struttura_storica (
 	numero_civicoS smallint not null,
 	data_vendita timestamp not null,
 	numero_camere_da_letto smallint not null check (numero_camere_da_letto > 0),
-	limite_ingresso timestamp not null check (limite_ingresso < limite_uscita),
-	limite_uscita timestamp not null,
+	limite_ingresso time not null check (limite_ingresso < limite_uscita),
+	limite_uscita time not null,
 	constraint Struttura_storica_PK primary key(ID_struttura)
 );
 
