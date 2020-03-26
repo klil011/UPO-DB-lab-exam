@@ -120,7 +120,7 @@ create table StanzaS(
     numero_letti smallint not null check(numero_letti > 0), 
     numero_bagni smallint not null check(numero_bagni >= 0), 
     tipo_letto varchar(20),
-    constraint StanzaSt_PK primary key(appartamS),
+    constraint StanzaSt_PK primary key(appartamS, n_stanza),
     constraint StanzaS_FK_AppartamS foreign key(appartamS) references AppartamS(ID_appartamS)
 );
 
