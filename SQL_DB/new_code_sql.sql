@@ -120,7 +120,7 @@ create table StanzaS(
     numero_letti smallint not null check(numero_letti > 0), 
     numero_bagni smallint not null check(numero_bagni >= 0), 
     tipo_letto varchar(20),
-    constraint StanzaSt_PK primary key(appartamS),
+    constraint StanzaSt_PK primary key(n_stanza, appartamS),
     constraint StanzaS_FK_AppartamS foreign key(appartamS) references AppartamS(ID_appartamS)
 );
 
@@ -169,7 +169,9 @@ create table Foto(
 create table Modifica_struttura(
     struttura integer not null,
     proprietario varchar(16),
-    constraint Modifica_struttura_PK primary key(struttura, proprietario),
+	data_modifica date,
+	testo varchar(100),
+    constraint Modifica_struttura_PK primary key(struttura, proprietario, data_modifica),
     constraint struttura_FK_Struttura_corrente foreign key(struttura) references Struttura_corrente(ID_struttura)
         on delete cascade,
     constraint proprietario_FK_Utente foreign key(proprietario) references Utente(CF)
