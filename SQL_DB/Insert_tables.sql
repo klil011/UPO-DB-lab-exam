@@ -181,3 +181,67 @@ insert into Risposte (editore, data_pubblicazione, testo, tipo_risposta, recensi
 insert into Risposte (editore, data_pubblicazione, testo, tipo_risposta, recensione) values ('XOQEGS12X37R724H', '2019-03-27 03:29:26', 'lobortis sapien sapien non', true, 5);
 
 /*            fine-Risposte            */
+
+/*                   fotos                          */
+
+insert into FotoS (url_pic, struttura) values ('http://dummyimage.com/247x141.jpg/5fa2dd/ffffff', 1);
+insert into FotoS (url_pic, struttura) values ('http://dummyimage.com/232x130.png/5fa2dx/ffffff', 1);
+insert into FotoS (url_pic, struttura) values ('http://dummyimage.com/118x240.png/ddpddd/000000', 2);
+insert into FotoS (url_pic, struttura) values ('http://dummyimage.com/205x124.png/ff4441/ffffff', 2);
+insert into FotoS (url_pic, struttura) values ('http://dummyimage.com/129x190.jpg/fg4442/ffffff', 3);
+insert into FotoS (url_pic, struttura) values ('http://dummyimage.com/243x242.png/dddddd/000000', 3);
+insert into FotoS (url_pic, struttura) values ('http://dummyimage.com/165x213.bmp/ff4443/ffffff', 4);
+insert into FotoS (url_pic, struttura) values ('http://dummyimage.com/212x227.jpg/dddddx/000000', 4);
+insert into FotoS (url_pic, struttura) values ('http://dummyimage.com/209x154.jpg/ff4444/ffffff', 5);
+insert into FotoS (url_pic, struttura) values ('http://dummyimage.com/129x190.jpg/ff4445/ffffff', 5);
+
+
+/*                   fotos                          */
+
+/*        AppartamC        */
+
+insert into AppartamC (struttura, internoA, piano) values ('4', '57', '8');
+insert into AppartamC (struttura, internoA, piano) values ('5', '55', '5');
+
+
+/*        fine-AppartamC        */
+
+/*                        stanzaC                                  */
+
+insert into stanzaC (appartamC, n_stanza, prezzo, disponibilitàSt, descrizioneSt, numero_posti_letto, numero_letti, numero_bagni, tipo_letto) values (1, 2, 232.99, true, 'quis augue luctus tincidunt nulla mollis molestie lorem quisque ut erat curabitur gravida', 6, 1, 2, 'magnis dis');
+insert into stanzaC (appartamC, n_stanza, prezzo, disponibilitàSt, descrizioneSt, numero_posti_letto, numero_letti, numero_bagni, tipo_letto) values (2, 7, 139.87, true, 'viverra dapibus nulla suscipit ligula in lacus curabitur at ipsum ac tellus semper interdum mauris ullamcorper purus sit', 5, 7, 8, 'mauris ullamcorper');
+
+/*                        stanzaC                                  */
+
+/*                                 Review_user                                         */
+
+insert into Review_user (scrittore, recensito, data_recensione, testo) values ('XOQEGS12X37R724H', 'YTJDFJ54T83Y153D', '2020-02-13', 'integer tincidunt ante vel ipsum praesent blandit lacinia erat');
+insert into Review_user (scrittore, recensito, data_recensione, testo) values ('LDFQIE23I47K620L', 'LDFQIE23I47K620L', '2018-03-15', 'porttitor lacus at turpis donec');
+insert into Review_user (scrittore, recensito, data_recensione, testo) values ('LDFQIE23I47K620L', 'LDFQIE23I47K620L', '2019-03-01', 'nibh fusce lacus purus aliquet at feugiat non pretium quis');
+insert into Review_user (scrittore, recensito, data_recensione, testo) values ('LDFQIE23I47K620L', 'LBLQPH50L97V655S', '2018-01-14', 'urna ut tellus nulla ut erat id mauris vulputate');
+insert into Review_user (scrittore, recensito, data_recensione, testo) values ('XOQEGS12X37R724H', 'ZZWONK86T38V499N', '2016-09-02', 'eros suspendisse accumsan tortor quis turpis sed');
+insert into Review_user (scrittore, recensito, data_recensione, testo) values ('YTJDFJ54T83Y153D', 'XOQEGS12X37R724H', '2015-04-09', 'pede ullamcorper augue a suscipit nulla elit ac nulla sed');
+insert into Review_user (scrittore, recensito, data_recensione, testo) values ('YTJDFJ54T83Y153D', 'ZZWONK86T38V499N', '2016-01-17', 'libero non mattis pulvinar nulla pede ullamcorper');
+
+
+/*                                 Review_user                                         */
+
+/*                                  modifica_struttura                     */
+insert into modifica_struttura (struttura, proprietario, testo, data_modifica) values (1, 'LDFQIE23I47K620L', 'cras pellentesque volutpat dui maecenas tristique est', '2018-08-29');
+insert into modifica_struttura (struttura, proprietario, testo, data_modifica) values (1, 'LDFQIE23I47K620L', 'justo sit amet sapien dignissim vestibulum vestibulum ante', '2018-06-01');
+insert into modifica_struttura (struttura, proprietario, testo, data_modifica) values (2, 'YTJDFJ54T83Y153D', 'eros suspendisse accumsan tortor quis turpis', '2018-06-26');
+insert into modifica_struttura (struttura, proprietario, testo, data_modifica) values (2, 'YTJDFJ54T83Y153D', 'orci nullam molestie nibh in lectus pellentesque at nulla', '2019-03-09');
+insert into modifica_struttura (struttura, proprietario, testo, data_modifica) values (2, 'YTJDFJ54T83Y153D', 'lacus curabitur at ipsum ac', '2018-12-20');
+insert into modifica_struttura (struttura, proprietario, testo, data_modifica) values (3, 'YTJDFJ54T83Y153D', 'vitae quam suspendisse potenti nullam porttitor', '2018-12-30');
+
+
+/*                                  modifica_struttura                     */
+
+/*                           appartams                          */
+
+
+insert into AppartamS (struttura, internoA, piano) values ('1', '21', '5');
+insert into AppartamS (struttura, internoA, piano) values ('2', '39', '2');
+
+
+/*                           appartams                                    */
