@@ -40,11 +40,11 @@ insert into Servizio (nome, descrizione, icona) values ('info', 'morph', 'data:i
 
 /*        struttura_corrente         */
 
-insert into Struttura_corrente (stato, regione, città, CapS, indirizzoS, numero_civicoS, numero_camere_da_letto, limite_ingresso, limite_uscita) values ('Ohio', 'M', 'Dayton', '261842', 'Fordem Place', '28', '721128', '04:05', '04:05');
-insert into Struttura_corrente (stato, regione, città, CapS, indirizzoS, numero_civicoS, numero_camere_da_letto, limite_ingresso, limite_uscita) values ('Texas', 'M', 'San Antonio', '940619', 'Lotheville Trail', '19', '508394', '04:05', '04:05');
-insert into Struttura_corrente (stato, regione, città, CapS, indirizzoS, numero_civicoS, numero_camere_da_letto, limite_ingresso, limite_uscita) values ('Texas', 'F', 'El Paso', '339188', 'Nova Place', '4', '50270', '04:05', '04:05');
-insert into Struttura_corrente (stato, regione, città, CapS, indirizzoS, numero_civicoS, numero_camere_da_letto, limite_ingresso, limite_uscita) values ('Illinois', 'F', 'Springfield', '247877', 'Kipling Avenue', '79', '54689', '04:05', '04:05');
-insert into Struttura_corrente (stato, regione, città, CapS, indirizzoS, numero_civicoS, numero_camere_da_letto, limite_ingresso, limite_uscita) values ('Florida', 'M', 'Orlando', '885490', 'Michigan Lane', '1', '362357', '04:05', '04:05');
+insert into Struttura_corrente (stato, regione, città, CapS, indirizzoS, numero_civicoS, numero_camere_da_letto, limite_ingresso, limite_uscita) values ('Ohio', 'M', 'Dayton', '261842', 'Fordem Place', '28', '7', '04:05', '04:05');
+insert into Struttura_corrente (stato, regione, città, CapS, indirizzoS, numero_civicoS, numero_camere_da_letto, limite_ingresso, limite_uscita) values ('Texas', 'M', 'San Antonio', '940619', 'Lotheville Trail', '19', '5', '04:05', '04:05');
+insert into Struttura_corrente (stato, regione, città, CapS, indirizzoS, numero_civicoS, numero_camere_da_letto, limite_ingresso, limite_uscita) values ('Texas', 'F', 'El Paso', '339188', 'Nova Place', '4', '4', '04:05', '04:05');
+insert into Struttura_corrente (stato, regione, città, CapS, indirizzoS, numero_civicoS, numero_camere_da_letto, limite_ingresso, limite_uscita) values ('Illinois', 'F', 'Springfield', '247877', 'Kipling Avenue', '79', '5', '04:05', '04:05');
+insert into Struttura_corrente (stato, regione, città, CapS, indirizzoS, numero_civicoS, numero_camere_da_letto, limite_ingresso, limite_uscita) values ('Florida', 'M', 'Orlando', '885490', 'Michigan Lane', '1', '4', '04:05', '04:05');
 
 /*        fine-struttura_corrente         */
 
