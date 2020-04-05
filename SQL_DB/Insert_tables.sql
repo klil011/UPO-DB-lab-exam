@@ -151,7 +151,18 @@ insert into CasaS (struttura, data_fine, prezzo, disponibilità, descrizione, nu
 
 /*        CasaS        */
 
-/*            stanzaS            */
+
+/*                           appartams                          */
+
+
+insert into AppartamS (struttura, internoA, piano) values ('1', '21', '5');
+insert into AppartamS (struttura, internoA, piano) values ('2', '39', '2');
+
+
+/*                           appartams                                    */
+
+
+/*            stanzaS            */ ---
 
 insert into StanzaS (appartamS, n_stanza, prezzo, disponibilitaSt, descrizioneSt, numero_posti_letto, numero_letti, numero_bagni, tipo_letto) values (2, 1, 47.7, true, 'velit vivamus vel nulla eget eros elementum', 3.4, 2.6, 1.14, 'nulla');
 insert into StanzaS (appartamS, n_stanza, prezzo, disponibilitaSt, descrizioneSt, numero_posti_letto, numero_letti, numero_bagni, tipo_letto) values (2, 2, 12.13, false, 'curae mauris viverra diam vitae quam', 1.85, 2.44, 1.06, 'non');
@@ -237,11 +248,3 @@ insert into modifica_struttura (struttura, proprietario, testo, data_modifica) v
 
 /*                                  modifica_struttura                     */
 
-/*                           appartams                          */
-
-
-insert into AppartamS (struttura, internoA, piano) values ('1', '21', '5');
-insert into AppartamS (struttura, internoA, piano) values ('2', '39', '2');
-
-
-/*                           appartams                                    */
