@@ -4,10 +4,10 @@ Contare il numero di lingue in cui le release contenute nel database sono scritt
 contenere soltanto il numero delle lingue, rinominato “Numero_Lingue”).
 
 Per eseguire la query è stato necessario utilizzare la tabella release con il campo language.
-L'attributo language non presenta valori nulli ciò e verificabile con la query "select * from release where language = null"
+L'attributo language non presenta valori nulli ciò e verificabile con la query "SELECT * FROM release WHERE language = null"
 
 */
-SELECT COUNT(*) as Numero_Righe FROM release GROUP BY language;
+SELECT COUNT(*) AS Numero_Lingue FROM release GROUP BY language;
 
 /*
 4)
@@ -18,7 +18,7 @@ Per eseguire la query è stato necessario utilizzare la tabella release con il c
 L'attributo name non presenta valori nulli
 
 */
-SELECT name FROM release WHERE name LIKE '%love%';
+SELECT name FROM release WHERE name ILIKE '%love%';
 
 /*
 7)
@@ -26,8 +26,15 @@ Trovare le release in cui il nome dell’artista è diverso dal nome accreditato
 contenere il nome della release, il nome dell’artista accreditato (cioè artist_credit.name) e il nome
 dell’artista (cioè artist.name))
 
+tabelle utili: release, artist, artist_credit, artist_credit_name
 */
+SELECT artist_credit_name.artist_credit id, artist.id, artist_credit.id
+FROM artist natural join artist_credit natural join artist_credit_name
 
+/*Seleziono artisti accreditati per quella release*/
+SELECT artist_credit.name AS "Nome_artist_credit", release.name AS "Nome_release"
+FROM artist_credit, release
+WHERE artist_credit.id = release.artist_credit;
 
 /*
 10)
@@ -36,7 +43,27 @@ il numero di release in quella lingua, cioè 0, e essere ordinato per lingua) (s
 query; almeno una delle due versioni non deve utilizzare le viste).
 
 */
+SELECT num_rel.name AS lingua, num_rel.numero_release
+FROM (
+	SELECT language.name, count(release.language) AS numero_release
+	FROM release
+	RIGHT JOIN language ON release.language = language.id
+	GROUP BY language.id
+) AS num_rel
+WHERE num_rel.numero_release = 0
+ORDER BY num_rel.name;
 
+--  10 V2
+CREATE view Numero_Lingue_Per_Release AS
+    SELECT language.name, count(release.language) AS numero_release
+	FROM release
+	RIGHT JOIN language ON release.language = language.id
+	GROUP BY language.id;
+
+SELECT name AS nome, numero_release
+FROM Numero_Lingue_Per_Release
+WHERE numero_release = 0
+ORDER BY name;
 
 /*
 13)
@@ -44,3 +71,80 @@ Ricavare gli artisti britannici che hanno pubblicato almeno 10 release (il risul
 dell’artista, il nome dello stato (cioè United Kingdom) e il numero di release) (scrivere due versioni della
 query; almeno una delle due versioni non deve utilizzare le viste).
 */
+
+-- Trovo tutti gli artisti Britannici
+SELECT artist.name AS nome_artista, area.name AS nome_area
+FROM artist
+INNER JOIN area ON artist.area = area.id
+WHERE area.name ilike 'united kingdom';
+
+-- numero di release per artista
+SELECT count(*) AS num_rel, artist_credit
+FROM release
+GROUP BY artist_credit;
+
+-- artisti con 10 o più release prodotte
+SELECT artist_credit_name.artist, num_rel_tab.num_rel
+FROM artist_credit_name, (
+	SELECT count(*) AS num_rel, artist_credit
+	FROM release
+	GROUP BY artist_credit
+) AS num_rel_tab
+WHERE num_rel_tab.artist_credit = artist_credit_name.artist_credit and
+num_rel_tab.num_rel >= 10;
+
+-- Query Definitiva senza viste
+SELECT artist.name AS nome_artista, area.name AS nome_stato, artist_with_10_or_more_rel.num_rel AS numero_di_release
+FROM artist, area, (
+
+						SELECT artist_credit_name.artist, num_rel_tab.num_rel
+							FROM artist_credit_name, (
+														SELECT count(*) AS num_rel, artist_credit
+														FROM release
+														GROUP BY artist_credit
+						) AS num_rel_tab
+						WHERE num_rel_tab.artist_credit = artist_credit_name.artist_credit and
+						num_rel_tab.num_rel >= 10
+
+) AS artist_with_10_or_more_rel
+WHERE artist.area = area.id and
+artist.id = artist_with_10_or_more_rel.artist and
+area.name ilike 'united kingdom' and
+artist.id IN (
+
+	SELECT artist_credit_name.artist
+		FROM artist_credit_name, (
+
+									SELECT count(*) AS num_rel, artist_credit
+									FROM release
+									GROUP BY artist_credit
+
+		) AS num_rel_tab
+	WHERE num_rel_tab.artist_credit = artist_credit_name.artist_credit and
+	num_rel_tab.num_rel >= 10
+
+);
+
+-- Query definitiva con viste
+
+-- la vista restituisce il numero di release prodotto da ogni artista
+CREATE VIEW num_rel_per_artist AS
+	SELECT artist_credit_name.artist AS artist, num_rel_tab.num_rel AS numero_di_release
+	FROM artist_credit_name, (
+								SELECT count(*) AS num_rel, artist_credit
+								FROM release
+								GROUP BY artist_credit
+	) AS num_rel_tab
+	WHERE artist_credit_name.artist_credit = num_rel_tab.artist_credit;
+
+-- la vista restituisce per ogni artista lo stato di appartenenza
+CREATE VIEW artist_state AS
+	SELECT artist.id AS artist_id, artist.name AS artist, area.name AS nome_stato
+	FROM artist
+	INNER JOIN area ON artist.area = area.id;
+
+SELECT artist_state.artist AS nome_artista, artist_state.nome_stato AS nome_stato, num_rel_per_artist.numero_di_release
+FROM num_rel_per_artist, artist_state
+WHERE	num_rel_per_artist.artist = artist_state.artist_id AND
+		artist_state.nome_stato ILIKE 'united kingdom' AND
+		num_rel_per_artist.numero_di_release >= 10;
