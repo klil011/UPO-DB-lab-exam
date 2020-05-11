@@ -1,0 +1,16 @@
+/* aggiunta utente */
+insert into utente (cf, nome, cognome, capu, indirizzou, numero_civicou, data_nascita, email, user_type, foto_profilo, super_host)
+values ('YTJDFM99T83Y153D', 'Dominic', 'Toretto', 74523, 'GoodMorningAmerica', 777, '1973-06-02', 'dom.fast@turbo.com', 1, 'http://dummyimage.com/123x114.bmp/5la2dd/ggffff', false);
+
+/* modifica prentazione*/
+update prenotazione set data_inizio = '2018-09-29', check_in = '2018-09-29 18:40:00' where n_pren = 82;
+
+/*aggiunta prenotazione*/
+insert into recensione (id_recensione, editore, data_pubblicazione, testo, tipo, struttura)
+values (6, 'YTJDFM99T83Y153D', '2019-06-10', 'Ottima sistemazione', false, 1);
+
+/*eliminazione struttura*/
+
+delete 
+from struttura_corrente
+where id_struttura = 5
