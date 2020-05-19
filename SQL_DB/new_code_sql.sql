@@ -247,7 +247,7 @@ create table Ha_posseduto(
 	proprietario varchar(16) not null, 
 	struttura integer not null,
 	constraint Ha_posseduto_PK primary key(proprietario, struttura),
-	constraint Proprietario_FK_Ha_posseduto foreign key(proprietario) references Utente(CF),
+	constraint Proprietario_FK_Ha_posseduto foreign key(proprietario) references Utente(CF) on delete cascade,
 	constraint Struttura_FK_Ha_posseduto foreign key(struttura) references Struttura_storica(ID_struttura)
 );
 
