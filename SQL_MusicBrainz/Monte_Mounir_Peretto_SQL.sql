@@ -28,13 +28,15 @@ dell’artista (cioè artist.name))
 
 tabelle utili: release, artist, artist_credit, artist_credit_name
 */
-SELECT artist_credit_name.artist_credit id, artist.id, artist_credit.id
-FROM artist natural join artist_credit natural join artist_credit_name
-
-/*Seleziono artisti accreditati per quella release*/
-SELECT artist_credit.name AS "Nome_artist_credit", release.name AS "Nome_release"
-FROM artist_credit, release
-WHERE artist_credit.id = release.artist_credit;
+SELECT release.name AS release, art_crdt_name_diff.artist_crdt_name AS "Artista accreditato", art_crdt_name_diff.artist_name AS "Nome artista"
+FROM release
+JOIN (
+	SELECT artist_credit.id AS art_crdt_id, artist.name AS artist_name, artist_credit.name AS artist_crdt_name
+	FROM artist
+		JOIN artist_credit_name ON artist_credit_name.artist = artist.id
+		JOIN artist_credit ON artist_credit.id = artist_credit_name.artist_credit
+	WHERE artist_credit.name != artist.name
+) AS art_crdt_name_diff ON art_crdt_name_diff.art_crdt_id = release.artist_credit;
 
 /*
 10)
