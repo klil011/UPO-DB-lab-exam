@@ -10,6 +10,19 @@ L'attributo language non presenta valori nulli ciò e verificabile con la query 
 SELECT COUNT(*) AS Numero_Lingue FROM release GROUP BY language;
 
 /*
+
+2)
+Select artist.name, area.name
+from artist join artist_credit_name on artist.id = artist_credit_name.artist 
+			join artist_credit on artist.id = artist_credit.id
+			join release on artist.id = release.artist_credit
+			join area on artist.area = area.id
+
+where language = (
+	Select id
+	from area
+	where name = 'Italy')
+
 4)
 Elencare le release che nel nome hanno la parola “love”, in qualsiasi posizione (quindi anche in prima
 posizione; il risultato deve contenere soltanto il nome della release).
@@ -21,6 +34,13 @@ L'attributo name non presenta valori nulli
 SELECT name FROM release WHERE name ILIKE '%love%';
 
 /*
+
+5)
+Select artist.name, artist_alias.name, artist_alias.type
+from artist_alias full join artist on artist = artist.id
+where artist.name = 'Prince';
+
+
 7)
 Trovare le release in cui il nome dell’artista è diverso dal nome accreditato nella release (il risultato deve
 contenere il nome della release, il nome dell’artista accreditato (cioè artist_credit.name) e il nome
@@ -39,6 +59,16 @@ JOIN (
 ) AS art_crdt_name_diff ON art_crdt_name_diff.art_crdt_id = release.artist_credit;
 
 /*
+
+8)
+Select artist.name, count(*)n_release
+from artist join artist_credit_name on artist.id = artist_credit_name.artist 
+			join artist_credit on artist.id = artist_credit.id
+			join release on artist.id = release.artist_credit
+group by artist.name
+having count (release.artist_credit) < 3
+
+
 10)
 Elencare le lingue cui non corrisponde nessuna release (il risultato deve contenere il nome della lingua,
 il numero di release in quella lingua, cioè 0, e essere ordinato per lingua) (scrivere due versioni della
@@ -68,6 +98,34 @@ WHERE numero_release = 0
 ORDER BY name;
 
 /*
+11)
+
+a)
+
+Select recording.length, recording.artist_credit, recording.name
+from artist join artist_credit_name on artist.id = artist_credit_name.artist 
+			join artist_credit on artist.id = artist_credit.id
+			join recording on artist.id = recording.artist_credit
+			
+where gender = 1 and recording.length < ( select max(length)
+						   from recording ) 
+group by recording.length, recording.artist_credit, recording.name
+
+
+b)
+
+create TEMP view  recLength as
+	select length, artist_credit, name
+	from recording
+	where recording.length < ( select max(length)
+						   from recording ) 
+group by recording.length, recording.artist_credit, recording.name
+
+select recLength.length, recLength.artist_credit, recLength.name
+from artist join recLength on artist.id = recLength.artist_credit
+where gender = 1
+
+
 13)
 Ricavare gli artisti britannici che hanno pubblicato almeno 10 release (il risultato deve contenere il nome
 dell’artista, il nome dello stato (cioè United Kingdom) e il numero di release) (scrivere due versioni della
