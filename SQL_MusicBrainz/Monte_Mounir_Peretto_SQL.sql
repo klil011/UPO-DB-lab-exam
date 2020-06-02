@@ -208,3 +208,51 @@ FROM num_rel_per_artist, artist_state
 WHERE	num_rel_per_artist.artist = artist_state.artist_id AND
 		artist_state.nome_stato ILIKE 'united kingdom' AND
 		num_rel_per_artist.numero_di_release >= 10;
+
+
+14)
+
+a)
+
+Select artist.name, count(release.artist_credit) as release_number
+from artist join artist_credit_name on artist.id = artist_credit_name.artist 
+			join artist_credit on artist.id = artist_credit.id
+			join release on artist.id = release.artist_credit
+			
+group by artist.name
+having count (release.artist_credit) > (
+	select avg(count)
+from (
+	select count(*) as count
+	from release
+	where packaging = 1
+	group by artist_credit
+) as count)
+order by release_number desc
+
+
+b)
+
+	create TEMP view  artistRelease as
+Select artist.name, count(release.artist_credit) as release_number
+from artist join artist_credit_name on artist.id = artist_credit_name.artist 
+			join artist_credit on artist.id = artist_credit.id
+			join release on artist.id = release.artist_credit
+			
+group by artist.name
+
+
+create TEMP view  avgRelease as
+	select avg(count)
+	from (
+	select count(*) as count
+	from release
+	where packaging = 1
+	group by artist_credit
+	) as count
+
+
+select name, release_number
+from artistRelease
+where release_number > (select * from avgRelease)
+order by release_number desc
