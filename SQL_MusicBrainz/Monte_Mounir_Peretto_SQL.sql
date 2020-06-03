@@ -256,3 +256,145 @@ select name, release_number
 from artistRelease
 where release_number > (select * from avgRelease)
 order by release_number desc
+
+/*
+17)
+Trovare il nome e la lunghezza della traccia più lunga appartenente a una release rilasciata in almeno due
+paesi (il risultato deve contenere il nome della traccia e la sua lunghezza in secondi) (scrivere due versioni
+della query).
+*/
+
+--trovo tutte le release rilasciate in almeno due paesi
+select release
+from (
+select count(release_country.country) as country, release_country.release
+from release_country
+group by release_country.release) as rel_country_count
+where country >= 2;
+
+--per tutti medium trovo la lunghezza massima della traccia
+select max(length) as max_length, medium, name
+from track
+group by medium;
+
+--per ogni medium appartenente ad una release rilasciata in più di due paesi trovo la lungh massima della traccia più lunga
+select track_max_length.medium, max_length
+from(
+	select max(length) as max_length, medium--per ogni release trovo la lunghezza massima della traccia
+	from track
+	group by medium
+) as track_max_length, medium
+where track_max_length.medium = medium.id and
+medium.release in (
+	select release--trovo tutte le release rilasciate in almeno due paesi
+	from (
+	select count(release_country.country) as country, release_country.release
+	from release_country
+	group by release_country.release) as rel_country_count
+	where country >= 2
+)
+
+--per ogni medium trovo la traccia di lungh max e restituisco la lunghezza e il nome
+select track.name, track.length
+from track,
+(
+	select track_max_length.medium, max_length--per ogni medium trovo la lungh massima della traccia più lunga
+	from(
+		select max(length) as max_length, medium--per ogni release trovo la lunghezza massima della traccia
+		from track
+		group by medium
+	) as track_max_length, medium
+	where track_max_length.medium = medium.id and
+	medium.release in (
+		select release--trovo tutte le release rilasciate in almeno due paesi
+		from (
+		select count(release_country.country) as country, release_country.release
+		from release_country
+		group by release_country.release) as rel_country_count
+		where country >= 2
+	)
+) as tracks_max_length
+where tracks_max_length.medium = track.medium and
+tracks_max_length.max_length = track.length
+
+--trovo la lunghezza della traccia di lunghezza massima appartenente ad una release presente in più di due paesi
+select max(length)
+from
+(
+	select track.name, track.length, track.id
+	from track,
+	(
+		select track_max_length.medium, max_length--per ogni medium trovo la lungh massima della traccia più lunga che faccia parte di una rel rilasciata in almeno 2 paesi
+		from(
+			select max(length) as max_length, medium--per ogni release trovo la lunghezza massima della traccia
+			from track
+			group by medium
+		) as track_max_length, medium
+		where track_max_length.medium = medium.id and
+		medium.release in (
+			select release--trovo tutte le release rilasciate in almeno due paesi
+			from (
+			select count(release_country.country) as country, release_country.release
+			from release_country
+			group by release_country.release) as rel_country_count
+			where country >= 2
+		)
+	) as tracks_max_length
+	where tracks_max_length.medium = track.medium and
+	tracks_max_length.max_length = track.length
+) as tracks_name_length
+
+--query definitiva
+select tracks_max_length.name, tracks_max_length.length
+from
+(
+	select max(length) as max_length
+	from
+	(
+		select track.name, track.length, track.id
+		from track,
+		(
+			select track_max_length.medium, max_length--per ogni medium trovo la lungh massima della traccia più lunga che faccia parte di una rel rilasciata in almeno 2 paesi
+			from(
+				select max(length) as max_length, medium--per ogni release trovo la lunghezza massima della traccia
+				from track
+				group by medium
+			) as track_max_length, medium
+			where track_max_length.medium = medium.id and
+			medium.release in (
+				select release--trovo tutte le release rilasciate in almeno due paesi
+				from (
+				select count(release_country.country) as country, release_country.release
+				from release_country
+				group by release_country.release) as rel_country_count
+				where country >= 2
+			)
+		) as tracks_max_length
+		where tracks_max_length.medium = track.medium and
+		tracks_max_length.max_length = track.length
+	) as tracks_name_length
+) as track_max_length,
+(
+	select track.name, track.length, track.id
+		from track,
+		(
+			select track_max_length.medium, max_length--per ogni medium trovo la lungh massima della traccia più lunga che faccia parte di una rel rilasciata in almeno 2 paesi
+			from(
+				select max(length) as max_length, medium--per ogni release trovo la lunghezza massima della traccia
+				from track
+				group by medium
+			) as track_max_length, medium
+			where track_max_length.medium = medium.id and
+			medium.release in (
+				select release--trovo tutte le release rilasciate in almeno due paesi
+				from (
+				select count(release_country.country) as country, release_country.release
+				from release_country
+				group by release_country.release) as rel_country_count
+				where country >= 2
+			)
+		) as tracks_max_length
+		where tracks_max_length.medium = track.medium and
+		tracks_max_length.max_length = track.length
+) as tracks_max_length
+where tracks_max_length.length = track_max_length.max_length;
