@@ -24,6 +24,14 @@ where language = (
 	Select id
 	from area
 	where name = 'Italy')
+
+/*
+3)
+Elencare le release di cui non si conosce la lingua (il risultato deve contenere soltanto il nome della
+release).
+*/
+select name from release where language is null;
+
 /*
 4)
 Elencare le release che nel nome hanno la parola “love”, in qualsiasi posizione (quindi anche in prima
@@ -43,6 +51,21 @@ pseudonimo dell'artista, il nome dell’artista (cioè Prince) e il tipo di pseu
 Select artist.name, artist_alias.name, artist_alias.type
 from artist_alias full join artist on artist = artist.id
 where artist.name = 'Prince';
+
+/*
+6)
+Elencare le release di gruppi inglesi ancora in attività (il risultato deve contenere il nome del gruppo e il
+nome della release e essere ordinato per nome del gruppo e nome della release)
+*/
+//nome gruppi interessati e codice id
+create view A as 
+select artist.name, artist_credit.id
+from artist
+inner join artist_credit on artist_credit.name = artist.name;
+
+select A.name art_name, release.name rel_name
+from A
+inner join release on A.id = release.artist_credit;
 
 /*
 7)
@@ -74,6 +97,65 @@ from artist join artist_credit_name on artist.id = artist_credit_name.artist
 group by artist.name
 having count (release.artist_credit) < 3
 
+/*
+9)
+Trovare la registrazione più lunga di un’artista donna (il risultato deve contenere il nome della
+registrazione, la sua durata in minuti e il nome dell’artista; tenere conto che le durate sono memorizzate
+in millesimi di secondo) (scrivere due versioni della query con e senza operatore aggregato MAX).
+*/
+/*CON AGGREGATORE MAX*/
+
+/*Trovo tutte le artiste donne*/
+create view ART_FEM as
+select artist.id, artist.name
+from artist
+where gender = (select id from gender where name = 'Female');
+
+/*tutti gli artisti con relativo nome del recording*/
+create view ALL_ART_REC as
+select recording.name as name_rec, artist.name name_art, recording.length
+from recording
+inner join artist on recording.artist_credit = artist.id;
+
+/*nome artista donna con relativo nome recording e lunghezza*/
+create view ALL_ART_FEM_REC as
+select name_art, ALL_ART_REC.name_rec, ALL_ART_REC.length
+from ALL_ART_REC
+inner join ART_FEM on name_art = ART_FEM.name;
+
+create view FEM_REC_MAX as
+select max(length) l_max
+from ALL_ART_FEM_REC;
+
+select ALL_ART_FEM_REC.name_art, ALL_ART_FEM_REC.name_rec, ALL_ART_FEM_REC.length
+from ALL_ART_FEM_REC, FEM_REC_MAX
+where FEM_REC_MAX.l_max = ALL_ART_FEM_REC.length;
+
+/*SENZA AGGREGATORE MAX*/
+
+/*Trovo tutte le artiste donne*/
+create view ART_FEM as
+select artist.id, artist.name
+from artist
+where gender = (select id from gender where name = 'Female');
+
+/*tutti gli artisti con relativo nome del recording*/
+create view ALL_ART_REC as
+select recording.name as name_rec, artist.name name_art, recording.length
+from recording
+inner join artist on recording.artist_credit = artist.id;
+
+/*nome artista donna con relativo nome recording e lunghezza*/
+create view ALL_ART_FEM_REC as
+select name_art, ALL_ART_REC.name_rec, ALL_ART_REC.length
+from ALL_ART_REC
+inner join ART_FEM on name_art = ART_FEM.name
+where ALL_ART_REC.length is not null
+ORDER BY ALL_ART_REC.length DESC;
+
+select *
+from ALL_ART_FEM_REC
+limit 1;
 /*
 10)
 Elencare le lingue cui non corrisponde nessuna release (il risultato deve contenere il nome della lingua,
@@ -311,6 +393,33 @@ select name, release_number
 from artistRelease
 where release_number > (select * from avgRelease)
 order by release_number desc
+
+/*
+15)
+Ricavare il primo artista morto dopo Louis Armstrong (il risultato deve contenere il nome dell’artista, la
+sua data di nascita e la sua data di morte) (scrivere due versioni della query; almeno una delle due versioni
+non deve utilizzare le viste).
+*/
+/*CON VISTA*/
+
+create view art_ord_end as
+select name, begin_date_year, begin_date_month, begin_date_day, end_date_year, end_date_month, end_date_day
+from artist
+order by end_date_year, end_date_month, end_date_day;
+
+select name, begin_date_year, begin_date_month, begin_date_day, end_date_year, end_date_month, end_date_day
+from art_ord_end
+where end_date_year >= 1971 and end_date_month >= 7 and end_date_day > 6
+limit 1;
+
+/*SENZA VISTA*/
+
+select name, begin_date_year, begin_date_month, begin_date_day, end_date_year, end_date_month, end_date_day
+from (select name, begin_date_year, begin_date_month, begin_date_day, end_date_year, end_date_month, end_date_day
+from artist
+order by end_date_year, end_date_month, end_date_day) as foo
+where end_date_year >= 1971 and end_date_month >= 7 and end_date_day > 6
+limit 1;
 
 /*
 17)
