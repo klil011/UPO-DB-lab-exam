@@ -429,9 +429,7 @@ drop view art_year_min;
 drop view art_ord_after;
 drop view art_ord_end;*/
 
-select *
-from artist
-where name ilike '%armstrong%';
+--drop view art_ord_end cascade;
 
 create view art_ord_end as
 select name, begin_date_year, begin_date_month, begin_date_day, end_date_year, end_date_month, end_date_day
@@ -441,7 +439,9 @@ order by end_date_year, end_date_month, end_date_day;
 create view art_ord_after as
 select name, begin_date_year, begin_date_month, begin_date_day, end_date_year, end_date_month, end_date_day
 from art_ord_end
-where end_date_year >= 1971 and end_date_month >= 7 and end_date_day > 6;
+where end_date_year >= (select end_date_year from artist where name ilike '%armstrong%') and 
+	  end_date_month >= (select end_date_month from artist where name ilike '%armstrong%') and 
+	  end_date_day > (select end_date_day from artist where name ilike '%armstrong%');
 
 create view art_year_min as
 select name, begin_date_year, begin_date_month, begin_date_day, end_date_year, end_date_month, end_date_day
@@ -460,16 +460,19 @@ where end_date_day = (select min(end_date_day) from art_month_min);
 /*SENZA VISTA*/
 
 /*trovo dati relativi a Louis Armstrong*/
-select *
-from artist
-where name ilike '%armstrong%';
-
 select name, begin_date_year, begin_date_month, begin_date_day, end_date_year, end_date_month, end_date_day
 from (select name, begin_date_year, begin_date_month, begin_date_day, end_date_year, end_date_month, end_date_day
+from (select name, begin_date_year, begin_date_month, begin_date_day, end_date_year, end_date_month, end_date_day
+from (select name, begin_date_year, begin_date_month, begin_date_day, end_date_year, end_date_month, end_date_day
+from (select name, begin_date_year, begin_date_month, begin_date_day, end_date_year, end_date_month, end_date_day
 from artist
-order by end_date_year, end_date_month, end_date_day) as foo
-where end_date_year >= 1971 and end_date_month >= 7 and end_date_day > 6
-limit 1;
+order by end_date_year, end_date_month, end_date_day) as b4
+where end_date_year >= (select end_date_year from artist where name ilike '%armstrong%') and 
+	  end_date_month >= (select end_date_month from artist where name ilike '%armstrong%') and 
+	  end_date_day > (select end_date_day from artist where name ilike '%armstrong%')) as b3 
+where end_date_year = (select min(end_date_year) from art_ord_after)) as b2
+where end_date_month = (select min(end_date_month) from art_year_min)) as b1
+where end_date_day = (select min(end_date_day) from art_month_min);
 
 /*
 17)
