@@ -612,3 +612,41 @@ from
 		tracks_max_length.max_length = track.length
 ) as tracks_max_length
 where tracks_max_length.length = track_max_length.max_length;
+
+--query definitiva con viste
+
+--trovo tutte le release rilasciate in almeno due paesi
+CREATE TEMP VIEW rel_more_two_country AS
+select release
+from (
+select count(release_country.country) as country, release_country.release as release
+from release_country
+group by release_country.release) as rel_country_count
+where country >= 2;
+
+--per ogni medium trovo la traccia di lungh max e restituisco la lunghezza e il nome
+CREATE TEMP VIEW tracks_max_length_per_medium AS
+select track.name, track.length
+from track,
+(
+	select track_max_length.medium, max_length--per ogni medium trovo la lungh massima della traccia più lunga
+	from(
+		select max(length) as max_length, medium--per ogni release trovo la lunghezza massima della traccia
+		from track
+		group by medium
+	) as track_max_length, medium
+	where track_max_length.medium = medium.id and
+	medium.release in (select * from rel_more_two_country)
+) as tracks_max_length
+where tracks_max_length.medium = track.medium and
+tracks_max_length.max_length = track.length;
+
+--query
+
+select tracks_max_length.name, tracks_max_length.length/1000 as length
+from
+(
+	select max(length) as max_length
+	from tracks_max_length_per_medium as tracks_name_length
+) as track_max_length, tracks_max_length_per_medium as tracks_max_length
+where tracks_max_length.length = track_max_length.max_length;
