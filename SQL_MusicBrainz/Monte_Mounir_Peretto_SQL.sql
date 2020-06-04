@@ -13,17 +13,22 @@ SELECT COUNT(*) AS Numero_Lingue FROM release GROUP BY language;
 2)
 Elencare gli artisti che hanno cantato canzoni in italiano (il risultato deve contenere il nome dell’artista
 e il nome della lingua).
+
+Per eseguire la query è stato necessario utilizzare la tabella artist e release.
+La tabella artist è servita per poter elencare il nome dell'artista.
+La tabella release è servita per poter identificare la lingua della canzone associata all'artista.
+L'attributo name della tabella artist non presenta valori nulli
+L'attributo name della tabella area non presenta valori nulli
+
 */
-Select artist.name, area.name
+
+Select artist.name, language.name
 from artist join artist_credit_name on artist.id = artist_credit_name.artist 
 			join artist_credit on artist.id = artist_credit.id
 			join release on artist.id = release.artist_credit
-			join area on artist.area = area.id
+			join language on language.id = release.language
 
-where language = (
-	Select id
-	from area
-	where name = 'Italy')
+where language.name = 'Italy'
 
 /*
 3)
@@ -47,9 +52,17 @@ SELECT name FROM release WHERE name ILIKE '%love%';
 5)
 Elencare tutti gli pseudonimi di Prince con il loro tipo, se disponibile (il risultato deve contenere lo
 pseudonimo dell'artista, il nome dell’artista (cioè Prince) e il tipo di pseudonimo (se disponibile)).
+
+Per eseguire la query è stato necessario utilizzare la tabella artist con il campo name e la tabella artist_alias
+con il campo name e type.
+L'attributo name della tabella artist non presenta valori nulli
+L'attributo name della tabella artist_alias non presenta valori nulli
+L'attributo type della tabella artist_alias non presenta valori nulli
+
+
 */
 Select artist.name, artist_alias.name, artist_alias.type
-from artist_alias full join artist on artist = artist.id
+from artist_alias join artist on artist = artist.id
 where artist.name = 'Prince';
 
 /*
@@ -89,6 +102,9 @@ JOIN (
 8)
 Trovare gli artisti con meno di tre release (il risultato deve contenere il nome dell’artista ed il numero di
 release).
+
+Per eseguire la query è stato necessario utilizzare la tabella artist con il campo name, la tabella artist_credit e release.
+
 */
 Select artist.name, count(*)n_release
 from artist join artist_credit_name on artist.id = artist_credit_name.artist 
