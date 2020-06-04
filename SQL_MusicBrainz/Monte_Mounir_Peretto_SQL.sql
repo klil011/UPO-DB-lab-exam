@@ -423,17 +423,46 @@ non deve utilizzare le viste).
 */
 /*CON VISTA*/
 
+/*drop view art_day_min;
+drop view art_month_min;
+drop view art_year_min;
+drop view art_ord_after;
+drop view art_ord_end;*/
+
+select *
+from artist
+where name ilike '%armstrong%';
+
 create view art_ord_end as
 select name, begin_date_year, begin_date_month, begin_date_day, end_date_year, end_date_month, end_date_day
 from artist
 order by end_date_year, end_date_month, end_date_day;
 
+create view art_ord_after as
 select name, begin_date_year, begin_date_month, begin_date_day, end_date_year, end_date_month, end_date_day
 from art_ord_end
-where end_date_year >= 1971 and end_date_month >= 7 and end_date_day > 6
-limit 1;
+where end_date_year >= 1971 and end_date_month >= 7 and end_date_day > 6;
+
+create view art_year_min as
+select name, begin_date_year, begin_date_month, begin_date_day, end_date_year, end_date_month, end_date_day
+from art_ord_after
+where end_date_year = (select min(end_date_year) from art_ord_after);
+
+create view art_month_min as
+select name, begin_date_year, begin_date_month, begin_date_day, end_date_year, end_date_month, end_date_day
+from art_year_min
+where end_date_month = (select min(end_date_month) from art_year_min);
+
+select name, begin_date_year, begin_date_month, begin_date_day, end_date_year, end_date_month, end_date_day
+from art_month_min
+where end_date_day = (select min(end_date_day) from art_month_min);
 
 /*SENZA VISTA*/
+
+/*trovo dati relativi a Louis Armstrong*/
+select *
+from artist
+where name ilike '%armstrong%';
 
 select name, begin_date_year, begin_date_month, begin_date_day, end_date_year, end_date_month, end_date_day
 from (select name, begin_date_year, begin_date_month, begin_date_day, end_date_year, end_date_month, end_date_day
