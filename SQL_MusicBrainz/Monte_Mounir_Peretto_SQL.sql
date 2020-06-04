@@ -530,7 +530,7 @@ from
 ) as tracks_name_length
 
 --query definitiva
-select tracks_max_length.name, tracks_max_length.length
+select tracks_max_length.name, tracks_max_length.length/1000 as length
 from
 (
 	select max(length) as max_length
