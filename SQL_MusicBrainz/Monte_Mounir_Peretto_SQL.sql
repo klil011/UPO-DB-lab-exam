@@ -10,8 +10,10 @@ L'attributo language non presenta valori nulli ciò e verificabile con la query 
 SELECT COUNT(*) AS Numero_Lingue FROM release GROUP BY language;
 
 /*
-
 2)
+Elencare gli artisti che hanno cantato canzoni in italiano (il risultato deve contenere il nome dell’artista
+e il nome della lingua).
+*/
 Select artist.name, area.name
 from artist join artist_credit_name on artist.id = artist_credit_name.artist 
 			join artist_credit on artist.id = artist_credit.id
@@ -22,7 +24,7 @@ where language = (
 	Select id
 	from area
 	where name = 'Italy')
-
+/*
 4)
 Elencare le release che nel nome hanno la parola “love”, in qualsiasi posizione (quindi anche in prima
 posizione; il risultato deve contenere soltanto il nome della release).
@@ -34,13 +36,15 @@ L'attributo name non presenta valori nulli
 SELECT name FROM release WHERE name ILIKE '%love%';
 
 /*
-
 5)
+Elencare tutti gli pseudonimi di Prince con il loro tipo, se disponibile (il risultato deve contenere lo
+pseudonimo dell'artista, il nome dell’artista (cioè Prince) e il tipo di pseudonimo (se disponibile)).
+*/
 Select artist.name, artist_alias.name, artist_alias.type
 from artist_alias full join artist on artist = artist.id
 where artist.name = 'Prince';
 
-
+/*
 7)
 Trovare le release in cui il nome dell’artista è diverso dal nome accreditato nella release (il risultato deve
 contenere il nome della release, il nome dell’artista accreditato (cioè artist_credit.name) e il nome
@@ -59,8 +63,10 @@ JOIN (
 ) AS art_crdt_name_diff ON art_crdt_name_diff.art_crdt_id = release.artist_credit;
 
 /*
-
 8)
+Trovare gli artisti con meno di tre release (il risultato deve contenere il nome dell’artista ed il numero di
+release).
+*/
 Select artist.name, count(*)n_release
 from artist join artist_credit_name on artist.id = artist_credit_name.artist 
 			join artist_credit on artist.id = artist_credit.id
@@ -68,7 +74,7 @@ from artist join artist_credit_name on artist.id = artist_credit_name.artist
 group by artist.name
 having count (release.artist_credit) < 3
 
-
+/*
 10)
 Elencare le lingue cui non corrisponde nessuna release (il risultato deve contenere il nome della lingua,
 il numero di release in quella lingua, cioè 0, e essere ordinato per lingua) (scrivere due versioni della
@@ -99,8 +105,11 @@ ORDER BY name;
 
 /*
 11)
-
-a)
+Ricavare la seconda registrazione per lunghezza di un artista uomo (il risultato deve comprendere l'artista
+accreditato, il nome della registrazione e la sua lunghezza) (scrivere due versioni della query; almeno
+una delle due versioni non deve utilizzare le viste).
+*/
+--a)
 
 Select recording.length, recording.artist_credit, recording.name
 from artist join artist_credit_name on artist.id = artist_credit_name.artist 
@@ -112,7 +121,7 @@ where gender = 1 and recording.length < ( select max(length)
 group by recording.length, recording.artist_credit, recording.name
 
 
-b)
+--b)
 
 create TEMP view  recLength as
 	select length, artist_credit, name
@@ -125,7 +134,52 @@ select recLength.length, recLength.artist_credit, recLength.name
 from artist join recLength on artist.id = recLength.artist_credit
 where gender = 1
 
+/*
+12)
+Per ogni stato esistente riportare la lunghezza totale delle registrazioni di artisti di quello stato (il risultato
+deve comprendere il nome dello stato e la lunghezza totale in minuti delle registrazioni (0 se lo stato non
+ha registrazioni) (scrivere due versioni della query; almeno una delle due versioni non deve utilizzare le
+viste).
+*/
 
+--query senza vista
+select tot_rec_length, area.name
+from
+(
+	select sum(rec_length) as tot_rec_length, area
+	from
+	(
+		select sum(COALESCE(recording.length, 0)) as rec_length, artist.area as area
+		from artist
+		join artist_credit_name on artist.id = artist_credit_name.artist
+		join artist_credit on artist_credit.id = artist_credit_name.artist_credit
+		right join recording on recording.artist_credit = artist_credit.id
+		group by artist.area
+	) as tot_area_rec
+	group by tot_area_rec.area
+) as tot_rec_for_area
+join area on area.id = tot_rec_for_area.area
+
+--query con vista
+CREATE TEMP VIEW rec_length_per_area AS
+select sum(COALESCE(recording.length, 0)) as rec_length, artist.area as area
+from artist
+join artist_credit_name on artist.id = artist_credit_name.artist
+join artist_credit on artist_credit.id = artist_credit_name.artist_credit
+right join recording on recording.artist_credit = artist_credit.id
+group by artist.area;
+
+select tot_rec_length, area.name
+from
+(
+	select sum(rec_length) as tot_rec_length, area
+	from rec_length_per_area
+	group by rec_length_per_area.area
+) as tot_rec_for_area
+join area on area.id = tot_rec_for_area.area;
+
+
+/*
 13)
 Ricavare gli artisti britannici che hanno pubblicato almeno 10 release (il risultato deve contenere il nome
 dell’artista, il nome dello stato (cioè United Kingdom) e il numero di release) (scrivere due versioni della
@@ -209,10 +263,11 @@ WHERE	num_rel_per_artist.artist = artist_state.artist_id AND
 		artist_state.nome_stato ILIKE 'united kingdom' AND
 		num_rel_per_artist.numero_di_release >= 10;
 
-
+/*
 14)
+*/
 
-a)
+--a)
 
 Select artist.name, count(release.artist_credit) as release_number
 from artist join artist_credit_name on artist.id = artist_credit_name.artist 
@@ -231,7 +286,7 @@ from (
 order by release_number desc
 
 
-b)
+--b)
 
 	create TEMP view  artistRelease as
 Select artist.name, count(release.artist_credit) as release_number
