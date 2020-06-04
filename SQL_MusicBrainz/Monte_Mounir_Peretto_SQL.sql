@@ -214,8 +214,9 @@ Select recording.length, recording.artist_credit, recording.name
 from artist join artist_credit_name on artist.id = artist_credit_name.artist 
 			join artist_credit on artist.id = artist_credit.id
 			join recording on artist.id = recording.artist_credit
+			join gender on gender.id = artist.gender
 			
-where gender = 1 and recording.length < ( select max(length)
+where gender.name = 'Male' and recording.length < ( select max(length)
 						   from recording ) 
 group by recording.length, recording.artist_credit, recording.name
 
@@ -231,7 +232,8 @@ group by recording.length, recording.artist_credit, recording.name
 
 select recLength.length, recLength.artist_credit, recLength.name
 from artist join recLength on artist.id = recLength.artist_credit
-where gender = 1
+	    join gender on gender.id = artist.gender
+where gender.name = 'Male'
 
 /*
 12)
