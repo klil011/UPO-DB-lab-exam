@@ -25,14 +25,6 @@ where language = (
 	from area
 	where name = 'Italy')
 
-<<<<<<< HEAD
-3)
-
-select name 
-from release 
-where language is null;
-
-=======
 /*
 3)
 Elencare le release di cui non si conosce la lingua (il risultato deve contenere soltanto il nome della
@@ -41,7 +33,6 @@ release).
 select name from release where language is null;
 
 /*
->>>>>>> d7d6c40ec8918389f9cb2dfc70b13111ec7314cf
 4)
 Elencare le release che nel nome hanno la parola “love”, in qualsiasi posizione (quindi anche in prima
 posizione; il risultato deve contenere soltanto il nome della release).
@@ -61,29 +52,16 @@ Select artist.name, artist_alias.name, artist_alias.type
 from artist_alias full join artist on artist = artist.id
 where artist.name = 'Prince';
 
-<<<<<<< HEAD
-6)
-
-=======
 /*
 6)
 Elencare le release di gruppi inglesi ancora in attività (il risultato deve contenere il nome del gruppo e il
 nome della release e essere ordinato per nome del gruppo e nome della release)
 */
 //nome gruppi interessati e codice id
->>>>>>> d7d6c40ec8918389f9cb2dfc70b13111ec7314cf
 create view A as 
 select artist.name, artist_credit.id
 from artist
 inner join artist_credit on artist_credit.name = artist.name;
-<<<<<<< HEAD
-
-select A.name art_name, release.name rel_name
-from A
-inner join release on A.id = release.artist_credit;
-
-=======
->>>>>>> d7d6c40ec8918389f9cb2dfc70b13111ec7314cf
 
 select A.name art_name, release.name rel_name
 from A
@@ -119,13 +97,6 @@ from artist join artist_credit_name on artist.id = artist_credit_name.artist
 group by artist.name
 having count (release.artist_credit) < 3
 
-<<<<<<< HEAD
-
-9)
-
-
-
-=======
 /*
 9)
 Trovare la registrazione più lunga di un’artista donna (il risultato deve contenere il nome della
@@ -186,7 +157,6 @@ select *
 from ALL_ART_FEM_REC
 limit 1;
 /*
->>>>>>> d7d6c40ec8918389f9cb2dfc70b13111ec7314cf
 10)
 Elencare le lingue cui non corrisponde nessuna release (il risultato deve contenere il nome della lingua,
 il numero di release in quella lingua, cioè 0, e essere ordinato per lingua) (scrivere due versioni della
