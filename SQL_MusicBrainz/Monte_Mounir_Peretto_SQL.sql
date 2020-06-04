@@ -70,15 +70,16 @@ where artist.name = 'Prince';
 Elencare le release di gruppi inglesi ancora in attività (il risultato deve contenere il nome del gruppo e il
 nome della release e essere ordinato per nome del gruppo e nome della release)
 */
-//nome gruppi interessati e codice id
 create view A as 
 select artist.name, artist_credit.id
 from artist
-inner join artist_credit on artist_credit.name = artist.name;
+inner join artist_credit on artist_credit.name = artist.name
+where artist.ended = false;
 
 select A.name art_name, release.name rel_name
 from A
-inner join release on A.id = release.artist_credit;
+inner join release on A.id = release.artist_credit
+order by art_name, rel_name;
 
 /*
 7)
