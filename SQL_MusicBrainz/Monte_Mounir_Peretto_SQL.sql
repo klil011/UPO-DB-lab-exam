@@ -380,8 +380,9 @@ having count (release.artist_credit) > (
 	select avg(count)
 from (
 	select count(*) as count
-	from release
-	where packaging = 1
+	from release join medium on release.id = medium.release
+				 join medium_format on medium_format.id = medium.format 
+	where medium_format.name = 'CD'
 	group by artist_credit
 ) as count)
 order by release_number desc
@@ -402,8 +403,9 @@ create TEMP view  avgRelease as
 	select avg(count)
 	from (
 	select count(*) as count
-	from release
-	where packaging = 1
+	from release join medium on release.id = medium.release
+				 join medium_format on medium_format.id = medium.format
+	where medium_format.name = 'CD'
 	group by artist_credit
 	) as count
 
