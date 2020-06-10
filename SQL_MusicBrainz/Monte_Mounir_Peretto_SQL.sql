@@ -208,32 +208,55 @@ Ricavare la seconda registrazione per lunghezza di un artista uomo (il risultato
 accreditato, il nome della registrazione e la sua lunghezza) (scrivere due versioni della query; almeno
 una delle due versioni non deve utilizzare le viste).
 */
+
 --a)
 
-Select recording.length, recording.artist_credit, recording.name
-from artist join artist_credit_name on artist.id = artist_credit_name.artist 
-			join artist_credit on artist.id = artist_credit.id
-			join recording on artist.id = recording.artist_credit
-			join gender on gender.id = artist.gender
-			
-where gender.name = 'Male' and recording.length < ( select max(length)
-						   from recording ) 
-group by recording.length, recording.artist_credit, recording.name
+select distinct artist_credit.name, t2.second_length, artist_credit.id, recording.name
+from artist_credit join (
+	--seleziono la registrazione massima, che corrisponde alla seconda registrazione per artista
+	select  recording.artist_credit, max(recording.length) as second_length
+	from recording, ( 
+		--seleziono per ogni artista la registrazione più lunga
+		select recording.artist_credit, max(length)
+		from recording join artist_credit on recording.artist_credit = artist_credit.id
+						join artist_credit_name on artist_credit_name.artist_credit = artist_credit.id
+						join artist on artist.id = artist_credit.id
+						join gender on artist.gender = gender.id
+		where length is not null and gender.name ilike 'male' 
+		group by recording.artist_credit) as t1
+	--seleziono le registrazioni minori della registrazione massima per artista
+	where  recording.length < t1.max 
+	group by recording.artist_credit
+	order by artist_credit asc) as t2
+on artist_credit.id = t2.artist_credit
+join recording on recording.artist_credit = t2.artist_credit
+where t2.second_length = recording.length
+order by artist_credit.id asc
 
 
 --b)
 
-create TEMP view  recLength as
-	select length, artist_credit, name
-	from recording
-	where recording.length < ( select max(length)
-						   from recording ) 
-group by recording.length, recording.artist_credit, recording.name
+create TEMP view  maxRecLength as
+select recording.artist_credit, max(length)
+		from recording join artist_credit on recording.artist_credit = artist_credit.id
+						join artist_credit_name on artist_credit_name.artist_credit = artist_credit.id
+						join artist on artist.id = artist_credit.id
+						join gender on artist.gender = gender.id
+		where length is not null and gender.name ilike 'male' 
+		group by recording.artist_credit
 
-select recLength.length, recLength.artist_credit, recLength.name
-from artist join recLength on artist.id = recLength.artist_credit
-	    join gender on gender.id = artist.gender
-where gender.name = 'Male'
+create TEMP view secondLength as
+select recording.artist_credit, max(recording.length)
+from recording, maxRecLength
+where recording.length < maxRecLength.max
+group by recording.artist_credit
+
+select artist_credit.id, artist_credit.name, recording.name
+from artist_credit join secondLength on artist_credit.id = secondLength.artist_credit
+				   join recording on recording.artist_credit = secondLength.artist_credit
+where secondLength.max = recording.length
+order by artist_credit.id asc
+
 
 /*
 12)
