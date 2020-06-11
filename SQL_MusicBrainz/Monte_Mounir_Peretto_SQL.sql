@@ -389,6 +389,10 @@ WHERE	num_rel_per_artist.artist = artist_state.artist_id AND
 
 /*
 14)
+Considerando il numero medio di tracce tra le release pubblicate su CD, ricavare gli artisti che hanno
+pubblicato esclusivamente release con più tracce della media (il risultato deve contenere il nome
+dell’artista e il numero di release ed essere ordinato per numero di release discendente) (scrivere due
+versioni della query; almeno una delle due versioni non deve utilizzare le viste).
 */
 
 --a)
