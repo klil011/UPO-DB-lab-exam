@@ -1,12 +1,18 @@
 /*        Utente            */
 
-insert into Utente (CF, nome, cognome, capU, indirizzoU, numero_civicoU, data_nascita, email, user_type, foto_profilo, super_host) values ('XOQEGS12X37R724H', 'Anaël', 'Sanders', '54911', 'Karstens', 45, '1957-06-17', 'ssanders0@toplist.cz', 1, null, true);
-insert into Utente (CF, nome, cognome, capU, indirizzoU, numero_civicoU, data_nascita, email, user_type, foto_profilo, super_host) values ('LDFQIE23I47K620L', 'Erwéi', 'Jiricka', '06185', 'Sullivan', 69, '1980-02-05', 'tjiricka1@whitehouse.gov', 1, 'http://dummyimage.com/123x114.bmp/5fa2dd/ffffff', false);
-insert into Utente (CF, nome, cognome, capU, indirizzoU, numero_civicoU, data_nascita, email, user_type, foto_profilo, super_host) values ('ZZWONK86T38V499N', 'Océane', 'Drennan', '44282', 'Dwight', 12, '1957-01-07', 'kdrennan2@nyu.edu', 0, 'http://dummyimage.com/222x136.jpg/ff4444/ffffff', null);
-insert into Utente (CF, nome, cognome, capU, indirizzoU, numero_civicoU, data_nascita, email, user_type, foto_profilo, super_host) values ('YTJDFJ54T83Y153D', 'Mélodie', 'Clow', '50910', 'Maywood', 44, '2012-02-27', 'nclow3@wix.com', 1, null, false);
-insert into Utente (CF, nome, cognome, capU, indirizzoU, numero_civicoU, data_nascita, email, user_type, foto_profilo, super_host) values ('LBLQPH50L97V655S', 'Hélène', 'Cobelli', '04375', 'Dunning', 37, '2001-05-05', 'pcobelli4@typepad.com', 0, null, null);
+insert into Utente (CF, nome, cognome, capU, indirizzoU, numero_civicoU, data_nascita, email, user_type, foto_profilo) values ('XOQEGS12X37R724H', 'Anaël', 'Sanders', '54911', 'Karstens', 45, '1957-06-17', 'ssanders0@toplist.cz', 1, null);
+insert into Utente (CF, nome, cognome, capU, indirizzoU, numero_civicoU, data_nascita, email, user_type, foto_profilo) values ('LDFQIE23I47K620L', 'Erwéi', 'Jiricka', '06185', 'Sullivan', 69, '1980-02-05', 'tjiricka1@whitehouse.gov', 1, 'http://dummyimage.com/123x114.bmp/5fa2dd/ffffff');
+insert into Utente (CF, nome, cognome, capU, indirizzoU, numero_civicoU, data_nascita, email, user_type, foto_profilo) values ('ZZWONK86T38V499N', 'Océane', 'Drennan', '44282', 'Dwight', 12, '1957-01-07', 'kdrennan2@nyu.edu', 0, 'http://dummyimage.com/222x136.jpg/ff4444/ffffff');
+insert into Utente (CF, nome, cognome, capU, indirizzoU, numero_civicoU, data_nascita, email, user_type, foto_profilo) values ('YTJDFJ54T83Y153D', 'Mélodie', 'Clow', '50910', 'Maywood', 44, '2012-02-27', 'nclow3@wix.com', 1, null);
+insert into Utente (CF, nome, cognome, capU, indirizzoU, numero_civicoU, data_nascita, email, user_type, foto_profilo) values ('LBLQPH50L97V655S', 'Hélène', 'Cobelli', '04375', 'Dunning', 37, '2001-05-05', 'pcobelli4@typepad.com', 0, null);
 
 /*        --    Fine Utente        --    */
+
+/*        Super_host            */
+
+insert into Super_host (Utente) values ('XOQEGS12X37R724H');
+
+/*        Fine Super_host            */
 
 /*                      inizio-Struttura_storica            */
 
