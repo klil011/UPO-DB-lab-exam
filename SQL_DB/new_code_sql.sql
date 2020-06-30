@@ -200,7 +200,6 @@ create table Recensione (
 	testo varchar(500) not null,
 	tipo boolean not null,
 	struttura integer,
-	/*struttura integer check (struttura = (select struttura from Prenotazione where cliente = editoreS)),*/
 	constraint ID_recensione_PK primary key(ID_recensione),
 	constraint editore_FK_Utente foreign key (editore) references Utente(CF) on delete set null,
 	constraint struttura_FK_Struttura foreign key (struttura) references Struttura_corrente(ID_struttura) on delete set null
