@@ -13,9 +13,9 @@ create table Utente(
 );
 
 create table Super_host(
-	Utente varchar(16) not null,
-	constraint ID_sh_PK primary key(Utente),
-	constraint ID_sh_FK_Utente foreign key (Utente) references Utente(CF) on delete cascade
+	utente varchar(16) not null,
+	constraint Super_host_PK primary key(utente),
+	constraint Super_host_FK_Utente foreign key(utente) references Utente(CF) on delete cascade
 	
 );
 
