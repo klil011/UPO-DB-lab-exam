@@ -4,12 +4,12 @@ where cf = 'XOQEGS12X37R724H';
 
 --  Modifica Utente
 update Utente
-set nome = 'Jane', cognome = 'Doe', capU = 13450, indirizzoU = 'Siattle', numero_civicoU = 33, data_nascita = '1957-06-17', email = 'jane@mail.com', user_type = 1, foto_profilo = 'http://dummyimage.com/123x114.bmp/aaffvv/ffffaa', super_host = true
+set nome = 'Jane', cognome = 'Doe', capU = 13450, indirizzoU = 'Siattle', numero_civicoU = 33, data_nascita = '1957-06-17', email = 'jane@mail.com', user_type = 1, foto_profilo = 'http://dummyimage.com/123x114.bmp/aaffvv/ffffaa'
 where cf = 'XOQEGS12X37R724H';
 
 --  Aggiunta Utente
-insert into utente (cf, nome, cognome, capu, indirizzou, numero_civicou, data_nascita, email, user_type, foto_profilo, super_host)
-values ('YTJDFM99T83Y153D', 'Dominic', 'Toretto', 74523, 'GoodMorningAmerica', 777, '1973-06-02', 'dom.fast@turbo.com', 1, 'http://dummyimage.com/123x114.bmp/5la2dd/ggffff', false);
+insert into utente (cf, nome, cognome, capu, indirizzou, numero_civicou, data_nascita, email, user_type, foto_profilo)
+values ('YTJDFM99T83Y153D', 'Dominic', 'Toretto', 74523, 'GoodMorningAmerica', 777, '1973-06-02', 'dom.fast@turbo.com', 1, 'http://dummyimage.com/123x114.bmp/5la2dd/ggffff');
 
 --  Eliminazione Utente
 delete from utente where cf = 'XOQEGS12X37R724H';
@@ -46,9 +46,8 @@ where ID_struttura = 1;
 --  Aggiunta Struttura_corrente
 insert into Struttura_corrente (stato, regione, città, CapS, indirizzoS, numero_civicoS, numero_camere_da_letto, limite_ingresso, limite_uscita)
 values ('Italia', 'F', 'Biella', '13900', 'Biella', '4', '4', '04:05', '04:05');
-
+*/
 --  Eliminazione Struttura_corrente
 delete 
 from struttura_corrente
 where id_struttura = 5
-
